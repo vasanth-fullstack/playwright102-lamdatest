@@ -1,4 +1,4 @@
-name: PW - HyperExecute - Vasantha
+name: Playwright with Hyperexecute
 on:
   workflow_dispatch:
     inputs:
@@ -10,7 +10,7 @@ on:
         required: true
         
 jobs:
-  HyperExecute:
+  PW-HyperExecute:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     strategy:
@@ -18,12 +18,19 @@ jobs:
     steps:
       - name: Checkout sources
         uses: actions/checkout@v2
-
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+      - name: Install dependencies
+        run: npm ci
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
       - name: Download CLI and Setting Environment Variables
         shell: bash
         run: |
           curl https://downloads.lambdatest.com/hyperexecute/linux/hyperexecute -o hyperexecute
-          chmod +x hyperexecute
+          chmod u+x hyperexecute
       
       - name: Executing the Job
         shell: bash
