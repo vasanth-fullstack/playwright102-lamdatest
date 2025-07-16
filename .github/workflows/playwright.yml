@@ -1,5 +1,10 @@
 name: Playwright with Hyperexecute
 on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  
   workflow_dispatch:
     inputs:
       username:
@@ -16,24 +21,16 @@ jobs:
     strategy:
       fail-fast: false
     steps:
-      - name: Checkout sources
-        uses: actions/checkout@v2
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: lts/*
-      - name: Install dependencies
-        run: npm ci
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
-      - name: Download CLI and Setting Environment Variables
-        shell: bash
+      - name: Checkout Code
+        uses: actions/checkout@v3
+      - name: Download HyperExecute CLI
         run: |
-          curl https://downloads.lambdatest.com/hyperexecute/linux/hyperexecute -o hyperexecute
-          chmod u+x hyperexecute
+          curl -O https://downloads.lambdatest.com/hyperexecute/linux/hyperexecute
+          chmod +x hyperexecute
+          sudo mv hyperexecute /usr/local/bin
       
-      - name: Executing the Job
+      - name: Run Playwright Tests on HyperExecute
         shell: bash
         run: |
-          ./hyperexecute --user ${{ github.event.inputs.username }} --key ${{ github.event.inputs.accessKey }}  --config --config .autosplit.yaml
+          ./hyperexecute --user ${{ github.event.inputs.username }} --key ${{ github.event.inputs.accessKey }}  --config .autosplit.yaml
           echo "Test completion"
