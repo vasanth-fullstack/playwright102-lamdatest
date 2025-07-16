@@ -1,10 +1,5 @@
 name: Playwright with Hyperexecute
 on:
-  push:
-    branches: [ main, master ]
-  pull_request:
-    branches: [ main, master ]
-  
   workflow_dispatch:
     inputs:
       username:
@@ -23,11 +18,11 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
-      - name: Download HyperExecute CLI
+      - name: Download CLI and Setting Environment Variables
+        shell: bash
         run: |
-          curl -O https://downloads.lambdatest.com/hyperexecute/linux/hyperexecute
-          chmod +x hyperexecute
-          sudo mv hyperexecute /usr/local/bin
+          curl https://downloads.lambdatest.com/hyperexecute/linux/hyperexecute -o hyperexecute
+          chmod +x hyperexecut
       
       - name: Run Playwright Tests on HyperExecute
         shell: bash
