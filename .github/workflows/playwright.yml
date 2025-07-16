@@ -22,7 +22,7 @@ jobs:
         shell: bash
         run: |
           curl https://downloads.lambdatest.com/hyperexecute/linux/hyperexecute -o hyperexecute
-          chmod +x hyperexecut
+          chmod +x hyperexecute
       
       - name: Run Playwright Tests on HyperExecute
         shell: bash
